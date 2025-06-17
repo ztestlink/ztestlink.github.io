@@ -1,17 +1,12 @@
 (function () {
-    console.log('Script started executing in the popup window.');
-
-    // Ensure the script runs in the popup window context
     const popupDocument = window.document;
 
     if (!popupDocument.body) {
-        console.error('Popup document body not found.');
+        console.error('Popup document body is missing.');
         return;
     }
 
-    console.log('Popup document ready.');
-
-    // Generate a simple calendar for the current month
+    // Generate a simple calendar
     function generateCalendar() {
         const today = new Date();
         const year = today.getFullYear();
@@ -21,28 +16,27 @@
             'January', 'February', 'March', 'April', 'May', 'June',
             'July', 'August', 'September', 'October', 'November', 'December'
         ];
-        const daysInWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
         const firstDay = new Date(year, month, 1).getDay();
-        const lastDate = new Date(year, month + 1, 0).getDate();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-        const table = popupDocument.createElement('table');
-        table.style.borderCollapse = 'collapse';
-        table.style.width = '100%';
-        table.style.maxWidth = '300px';
-        table.style.margin = '20px auto';
-        table.style.border = '1px solid #ddd';
-        table.style.fontFamily = 'Arial, sans-serif';
+        const calendarTable = popupDocument.createElement('table');
+        calendarTable.style.borderCollapse = 'collapse';
+        calendarTable.style.width = '90%';
+        calendarTable.style.margin = '20px auto';
+        calendarTable.style.fontFamily = 'Arial, sans-serif';
+        calendarTable.style.border = '1px solid #ddd';
 
         const caption = popupDocument.createElement('caption');
         caption.textContent = `${monthNames[month]} ${year}`;
         caption.style.fontSize = '20px';
-        caption.style.margin = '10px auto';
+        caption.style.marginBottom = '10px';
         caption.style.fontWeight = 'bold';
-        table.appendChild(caption);
+        calendarTable.appendChild(caption);
 
         const headerRow = popupDocument.createElement('tr');
-        daysInWeek.forEach((day) => {
+        daysOfWeek.forEach((day) => {
             const th = popupDocument.createElement('th');
             th.textContent = day;
             th.style.border = '1px solid #ddd';
@@ -50,7 +44,7 @@
             th.style.backgroundColor = '#f4f4f4';
             headerRow.appendChild(th);
         });
-        table.appendChild(headerRow);
+        calendarTable.appendChild(headerRow);
 
         let date = 1;
         for (let i = 0; i < 6; i++) {
@@ -59,11 +53,11 @@
                 const cell = popupDocument.createElement('td');
                 cell.style.border = '1px solid #ddd';
                 cell.style.textAlign = 'center';
-                cell.style.padding = '8px';
+                cell.style.padding = '10px';
 
                 if (i === 0 && j < firstDay) {
                     cell.textContent = '';
-                } else if (date > lastDate) {
+                } else if (date > daysInMonth) {
                     cell.textContent = '';
                 } else {
                     cell.textContent = date;
@@ -76,15 +70,14 @@
                 }
                 row.appendChild(cell);
             }
-            table.appendChild(row);
-            if (date > lastDate) break;
+            calendarTable.appendChild(row);
+
+            if (date > daysInMonth) break;
         }
 
-        return table;
+        return calendarTable;
     }
 
     const calendar = generateCalendar();
     popupDocument.body.appendChild(calendar);
-
-    console.log('Calendar added to popup document.');
 })();
