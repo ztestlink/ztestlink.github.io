@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open Calendar Popup</title>
+    <title>Popup with External Script</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,16 +12,24 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            background-color: #f4f4f9;
         }
         button {
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <button id="openCalendarBtn">Open Calendar</button>
+    <button id="openCalendarBtn">Open Calendar Popup</button>
 
     <script>
         document.getElementById('openCalendarBtn').addEventListener('click', function () {
@@ -29,81 +37,54 @@
             const popup = window.open('', '_blank', 'width=400,height=400');
 
             if (popup) {
-                // Write the calendar content into the popup
+                // Write basic HTML content into the popup
                 popup.document.write(`
                     <!DOCTYPE html>
-                    <html>
+                    <html lang="en">
                     <head>
-                        <title>Calendar</title>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <title>Calendar Popup</title>
                         <style>
                             body {
                                 font-family: Arial, sans-serif;
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
-                                height: 100vh;
-                                margin: 0;
-                            }
-                            table {
-                                border-collapse: collapse;
-                                width: 90%;
-                                margin-top: 20px;
-                                font-size: 18px;
-                            }
-                            th, td {
-                                border: 1px solid #ddd;
                                 text-align: center;
-                                padding: 10px;
+                                margin: 0;
+                                padding: 20px;
+                                background-color: #ffffff;
                             }
-                            th {
-                                background-color: #f4f4f4;
-                                font-weight: bold;
+                            h1 {
+                                font-size: 24px;
+                                margin-bottom: 20px;
                             }
-                            caption {
-                                margin: 10px;
-                                font-size: 20px;
-                                font-weight: bold;
+                            p {
+                                font-size: 16px;
+                                color: #555;
                             }
                         </style>
                     </head>
                     <body>
-                        <table>
-                            <caption>June 2025</caption>
-                            <thead>
-                                <tr>
-                                    <th>Sun</th>
-                                    <th>Mon</th>
-                                    <th>Tue</th>
-                                    <th>Wed</th>
-                                    <th>Thu</th>
-                                    <th>Fri</th>
-                                    <th>Sat</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td><td></td><td></td><td></td><td>1</td><td>2</td><td>3</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td>
-                                </tr>
-                                <tr>
-                                    <td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td>
-                                </tr>
-                                <tr>
-                                    <td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td>
-                                </tr>
-                                <tr>
-                                    <td>25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <h1>Calendar Popup</h1>
+                        <p>The calendar functionality will be added via the external script.</p>
                     </body>
                     </html>
                 `);
 
-                // Close the document to signal it's done being written
+                // Close the document to signal the popup is ready
                 popup.document.close();
+
+                // Dynamically inject the external JavaScript file
+                const script = popup.document.createElement('script');
+                script.src = 'https://example.com/external-calendar-script.js'; // Replace with your actual script URL
+                script.onload = () => {
+                    console.log('External script loaded successfully into the popup!');
+                };
+                script.onerror = () => {
+                    console.error('Failed to load external script.');
+                };
+
+                // Append the script to the <head> of the popup
+                popup.document.head.appendChild(script);
             } else {
                 alert('Popup blocked! Please enable popups for this site.');
             }
