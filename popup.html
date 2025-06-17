@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Popup with External Script</title>
+    <title>Popup Calendar</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -29,12 +29,17 @@
     </style>
 </head>
 <body>
+    <!-- Button to Open Calendar -->
     <button id="openCalendarBtn">Open Calendar Popup</button>
 
     <script>
         document.getElementById('openCalendarBtn').addEventListener('click', function () {
-            // Open a popup window
-            const popup = window.open('', '_blank', 'width=400,height=400');
+            // Open a popup window with specific dimensions
+            const popup = window.open(
+                '', 
+                'calendarPopup', // Name of the popup
+                'width=600,height=400,scrollbars=no,resizable=no,status=no,toolbar=no,menubar=no,location=no'
+            );
 
             if (popup) {
                 // Write basic HTML content into the popup
@@ -65,14 +70,14 @@
                     </html>
                 `);
 
-                // Close the document to signal the popup is ready
+                // Close the popup document so it’s ready
                 popup.document.close();
 
                 // Dynamically inject the external JavaScript file
                 const script = popup.document.createElement('script');
-                script.src = 'https://example.com/external-calendar-script.js'; // Replace with your actual script URL
+                script.src = 'https://example.com/external-calendar-script.js'; // Replace with actual URL
                 script.onload = () => {
-                    console.log('External script loaded successfully into the popup!');
+                    console.log('External script loaded successfully.');
                 };
                 script.onerror = () => {
                     console.error('Failed to load external script.');
