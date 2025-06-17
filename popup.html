@@ -49,17 +49,12 @@
                             body {
                                 font-family: Arial, sans-serif;
                                 text-align: center;
-                                margin: 0;
                                 padding: 20px;
-                                background-color: #ffffff;
+                                background-color: #fff;
                             }
                             h1 {
                                 font-size: 24px;
                                 margin-bottom: 20px;
-                            }
-                            p {
-                                font-size: 16px;
-                                color: #555;
                             }
                         </style>
                     </head>
@@ -75,7 +70,7 @@
 
                 // Dynamically inject the external JavaScript file
                 const script = popup.document.createElement('script');
-                script.src = 'https://ztestlink.github.io/popup.html/external-calendar-script.js'; // Replace with your actual script URL
+                script.src = 'https://example.com/external-calendar-script.js'; // Replace with your actual script URL
                 script.onload = () => {
                     console.log('External script loaded successfully into the popup!');
                 };
@@ -83,7 +78,7 @@
                     console.error('Failed to load external script.');
                 };
 
-                // Append the script to the <head> of the popup
+                // Append the script to the popup <head>
                 popup.document.head.appendChild(script);
             } else {
                 alert('Popup blocked! Please enable popups for this site.');
